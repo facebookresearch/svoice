@@ -4,7 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-# Authors: Yossi Adi (adiyoss) and Alexandre Defossez (adefossez)
+# Authors: Eliya Nachmani (enk100), Yossi Adi (adiyoss), Lior Wolf and Alexandre Defossez (adefossez)
 
 import argparse
 from concurrent.futures import ProcessPoolExecutor
@@ -75,10 +75,7 @@ def evaluate(args, model=None, data_loader=None, sr=None):
                 mixture, lengths, sources = [x.to(args.device) for x in data]
                 # Forward
                 with torch.no_grad():
-                    # TODO: explore this normalization
-                    # input normalization
-                    #  mixture = (mixture / 1.2) / mixture.max()  # divide by 1.2 to avoid saturation
-                    mixture /= mixture.max()  # divide by 1.2 to avoid saturation
+                    mixture /= mixture.max()
                     estimate = model(mixture)[-1]
                 sisnr_loss, snr, estimate, reorder_estimate = cal_loss(
                     sources, estimate, lengths)

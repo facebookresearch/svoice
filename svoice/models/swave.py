@@ -4,7 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
-# Authors: Yossi Adi (adiyoss)
+# Authors: Eliya Nachmani (enk100), Yossi Adi (adiyoss), Lior Wolf
 
 import sys
 import numpy as np
