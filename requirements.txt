@@ -1,0 +1,9 @@
+pesq==0.0.1
+numpy==1.19.4
+tqdm==4.51.0
+hydra_core==1.0.3
+hydra_colorlog==1.0.0
+pystoi==0.3.3
+torchaudio==0.6.0
+librosa==0.7.1
+numba==0.48
