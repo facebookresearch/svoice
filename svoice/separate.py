@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 parser = argparse.ArgumentParser("Speech separation using MulCat blocks")
-parser.add_argument("model_path", type=str, required=True, help="Model name")
+parser.add_argument("model_path", type=str, help="Model name")
 parser.add_argument("out_dir", type=str, default="exp/result",
                     help="Directory putting enhanced wav files")
 parser.add_argument("--mix_dir", type=str, default=None,
