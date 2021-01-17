@@ -159,28 +159,28 @@ optional arguments:
 Separating files can be done by launching the following:
 
 ```
-python -m svoice.separate --model_path=<path to the model> --mix_dir=<path to the dir with the mixture files> --out_dir=<path to store the separated files>
+python -m svoice.separate <path to the model> <path to store the separated files> --mix_dir=<path to the dir with the mixture files>
 ```
 
 Notice, you can either provide `mix_dir` or `mix_json` for the test data.
 For more details regarding possible arguments, please see:
 
 ```
-usage: Speech separation using MulCat blocks [-h] --model_path MODEL_PATH
-                                             [--mix_dir MIX_DIR]
+usage: Speech separation using MulCat blocks [-h] [--mix_dir MIX_DIR]
                                              [--mix_json MIX_JSON]
-                                             [--out_dir OUT_DIR]
                                              [--device DEVICE]
                                              [--sample_rate SAMPLE_RATE]
                                              [--batch_size BATCH_SIZE] [-v]
+                                             model_path out_dir
+
+positional arguments:
+  model_path            Model name
+  out_dir               Directory putting enhanced wav files
 
 optional arguments:
   -h, --help            show this help message and exit
-  --model_path MODEL_PATH
-                        Model name
   --mix_dir MIX_DIR     Directory including mix wav files
   --mix_json MIX_JSON   Json file including mix wav files
-  --out_dir OUT_DIR     Directory putting enhanced wav files
   --device DEVICE
   --sample_rate SAMPLE_RATE
                         Sample rate
