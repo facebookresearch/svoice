@@ -51,7 +51,7 @@ def save_wavs(estimate_source, mix_sig, lengths, filenames, out_dir, sr=16000):
         C = flat_estimate[i].shape[0]
         # future support for wave playing
         for c in range(C):
-            write(flat_estimate[i][c], filename + f"_s{c + 1}.wav")
+            write(flat_estimate[i][c], filename + f"_s{c + 1}.wav", sr=sr)
 
 
 def write(inputs, filename, sr=8000):
