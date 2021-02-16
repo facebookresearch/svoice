@@ -110,7 +110,7 @@ class DPMulCat(nn.Module):
                 batch_size, d2, d1, -1).permute(0, 3, 2, 1).contiguous()
             row_output = self.rows_normalization[i](row_output)
             # apply a skip connection
-            output = output + row_output
+            output += row_output
 
             col_input = output.permute(0, 2, 3, 1).contiguous().view(
                 batch_size * d1, d2, -1)
@@ -119,10 +119,11 @@ class DPMulCat(nn.Module):
                 batch_size, d1, d2, -1).permute(0, 3, 1, 2).contiguous()
             col_output = self.cols_normalization[i](col_output).contiguous()
             # apply a skip connection
-            output = output + col_output
+            output += col_output
 
             output_i = self.output(output)
-            output_all.append(output_i)
+            if self.training or i == (self.num_layers - 1):
+                output_all.append(output_i)
         return output_all
 
 
