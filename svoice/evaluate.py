@@ -49,7 +49,7 @@ def evaluate(args, model=None, data_loader=None, sr=None):
 
     # Load model
     if not model:
-        pkg = torch.load(args.model_path)
+        pkg = torch.load(args.model_path, map_location=args.device)
         if 'model' in pkg:
             model = pkg['model']
         else:
