@@ -132,3 +132,5 @@ models/
 *.th
 .DS_Store
 outputs/
+egs
+*.sh
