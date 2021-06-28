@@ -79,6 +79,25 @@ We provide a dataset generation script in which users can create their own noisy
 
 In case of generating a reverberant data, one needs to first install the [RIR-Generator][nprirgen] package. 
 
+For more details regarding possible arguments, please see:
+
+```
+usage: Mode [-h] [--in_path IN_PATH] [--out_path OUT_PATH]
+            [--noise_path NOISE_PATH] [--num_of_speakers NUM_OF_SPEAKERS]
+            [--num_of_scenes NUM_OF_SCENES] [--sec SEC] [--sr SR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --in_path IN_PATH
+  --out_path OUT_PATH
+  --noise_path NOISE_PATH
+  --num_of_speakers NUM_OF_SPEAKERS
+                        no of speakers.
+  --num_of_scenes NUM_OF_SCENES
+                        no of examples.
+  --sec SEC
+  --sr SR
+```
 
 ## Usage
 ### Quick Start with Toy Example
