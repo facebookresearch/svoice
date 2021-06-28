@@ -1,6 +1,6 @@
-# Voice Separation with an Unknown Number of Multiple Speakers (ICML 2020)
+# SVoice: Speaker Voice Separation using Neural Nets
 
-We provide a [PyTorch][pytorch] implementation of the paper: [Voice Separation with an Unknown Number of Multiple Speakers][arxiv] In which, we present a new method for separating a mixed audio sequence, in which multiple voices speak simultaneously. The new method employs gated neural networks that are trained to separate the voices at multiple processing steps, while maintaining the speaker in each output channel fixed. A different model is trained for every number of possible speakers, and the model with the largest number of speakers is employed to select the actual number of speakers in a given sample. Our method greatly outperforms the current state of the art, which, as we show, is not competitive for more than two speakers. Please note that this implementation does not contain the "IDloss" as described in the paper.
+We provide a [PyTorch][pytorch] implementation of our speaker voice separation research work. In [Voice Separation with an Unknown Number of Multiple Speakers][icml], we present a new method for separating a mixed audio sequence, in which multiple voices speak simultaneously. The new method employs gated neural networks that are trained to separate the voices at multiple processing steps, while maintaining the speaker in each output channel fixed. A different model is trained for every number of possible speakers, and the model with the largest number of speakers is employed to select the actual number of speakers in a given sample. Our method greatly outperforms the current state of the art, which, as we show, is not competitive for more than two speakers. Please note that this implementation does not contain the "IDloss" as described in the paper.
 
 Audio samples can be found here: [Samples][web]
 
@@ -72,6 +72,13 @@ python -m svoice.data.audio $mix > $out/mix.json
 python -m svoice.data.audio $spk1 > $out/s1.json
 python -m svoice.data.audio $spk1 > $out/s1.json
 ```
+
+### Creating your own dataset
+
+We provide a dataset generation script in which users can create their own noisy and reverberant datasets. This dataset generation scripts follows the same recipes as described in our recent ICASSP-2021 paper: [Single Channel Voice Separation for Unknown Number of Speakers Under Reverberant and Noisy Settings][icassp]. Generation scripts can be found under: `scripts/make_dataset.py`. This data generation scripts gets as input the clean recordings, together with a set of noises and uses these recordings to generate a noisy-reverberant dataset. We synthesize room impulse responses using the following [RIR-Generator][nprirgen] package, which uses the image method, proposed by [Allen and Berkley in 1979][rir]. This method is one of the most frequently used methods in the acoustic signal processing community to create synthetic room impulse responses. 
+
+In case of generating a reverberant data, one needs to first install the [RIR-Generator][nprirgen] package. 
+
 
 ## Usage
 ### Quick Start with Toy Example
@@ -220,7 +227,7 @@ width="49%">
 
 
 ## Citation
-If you find our code useful for you research, please cite it as:
+If you find our code or models useful for your research, please cite it as:
 
 ```
 @inproceedings{nachmani2020voice,
@@ -231,13 +238,27 @@ If you find our code useful for you research, please cite it as:
 }
 ```
 
+If you find our dataset generation pipeline useful, please cite it as:
+
+```
+@inproceedings{chazan2021single,
+  title={Single channel voice separation for unknown number of speakers under reverberant and noisy settings},
+  author={Chazan, Shlomo E and Wolf, Lior and Nachmani, Eliya and Adi, Yossi},
+  booktitle={ICASSP 2021-2021 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages={3730--3734},
+  year={2021},
+  organization={IEEE}
+}
+```
+
 ## License
 This repository is released under the CC-BY-NC-SA 4.0. license as found in the [LICENSE](LICENSE) file.
 
 The file: `svoice/models/sisnr_loss.py` and `svoice/data/preprocess.py` were adapted from the [kaituoxu/Conv-TasNet][convtas] repository. It is an unofficial implementation of the [Conv-TasNet: Surpassing Ideal Time-Frequency Magnitude Masking for Speech Separation][convtas-paper] paper, released under the MIT License.
 Additionally, several input manipulation functions were borrowed and modified from the [yluo42/TAC][tac] repository, released under the CC BY-NC-SA 3.0 License.
 
-[arxiv]: https://arxiv.org/abs/2003.01531
+[icml]: https://arxiv.org/abs/2003.01531.pdf
+[icassp]: https://arxiv.org/pdf/2011.02329.pdf
 [web]: https://enk100.github.io/speaker_separation/
 [pytorch]: https://pytorch.org/
 [hydra]: https://github.com/facebookresearch/hydra
@@ -245,4 +266,5 @@ Additionally, several input manipulation functions were borrowed and modified fr
 [convtas]: https://github.com/kaituoxu/Conv-TasNet 
 [convtas-paper]: https://arxiv.org/pdf/1809.07454.pdf
 [tac]: https://github.com/yluo42/TAC
-
+[nprirgen]: https://github.com/ty274/rir-generator
+[rir]:https://asa.scitation.org/doi/10.1121/1.382599
