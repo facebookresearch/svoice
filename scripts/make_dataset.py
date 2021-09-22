@@ -56,6 +56,8 @@ class dataset():
             name = self.names[sig_indx[i]]
             names.append(os.path.basename(name)[:-4])
             s, fs = sf.read(name)
+            if len(s.shape) > 1:
+                s = s[:, 0]
             s = quantize(s)
 
             l = len(s)
@@ -141,14 +143,16 @@ class dataset():
         name = self.noise_names[noise_idex[0]]
 
         s, fs = sf.read(name)
+        if len(s.shape) > 1:
+            s = s[:, 0]
         s = signal.resample(s, s.shape[0] // 2)
         s = quantize(s)
         if len(s) < self.size_of_signals:
             temp_noise = np.random.randn(self.size_of_signals,) * 0.01
-            temp_noise[0:len(s)] = temp_noise[0:len(s)] + s[0:len(s), 0]
+            temp_noise[0:len(s)] = temp_noise[0:len(s)] + s[0:len(s)]
             return temp_noise
         else:
-            return s[0:self.size_of_signals, 0]
+            return s[0:self.size_of_signals]
 
     def gen_scene(self, scenario_num_of_speakers, scene_i, current_write_path):
         S, sig_idx = self.fetch_signals(scenario_num_of_speakers)
@@ -202,14 +206,14 @@ def main(args):
         os.mkdir(args.out_path)
 
     for i in tqdm(np.arange(args.num_of_scenes)):
-        Data.gen_scene(args.num_of_speakers, i, args.out_path, args.num_of_scenes)
+        Data.gen_scene(args.num_of_speakers, i, args.out_path)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Mode")
-    parser.add_argument('--in_path', type=str, default='/checkpoint/adiyoss/dataset/wsj0-2spk/wav8k/min/tr/s1', help='')
-    parser.add_argument('--out_path', type=str, default='/checkpoint/adiyoss/dataset/tmp', help='')
-    parser.add_argument('--noise_path', type=str, default='/checkpoint/adiyoss/dataset/wham_noise/tr', help='')
+    parser.add_argument('--in_path', type=str, default='dataset/wsj0-2spk/wav8k/min/tr/s1', help='')
+    parser.add_argument('--out_path', type=str, default='dataset/tmp', help='')
+    parser.add_argument('--noise_path', type=str, default='dataset/wham_noise/tr', help='')
     parser.add_argument('--num_of_speakers', type=int, default=2, help='no of speakers.')
     parser.add_argument('--num_of_scenes', type=int, default=10, help='no of examples.')
     parser.add_argument('--sec', type=int, default=4, help='')
