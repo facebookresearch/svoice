@@ -38,9 +38,9 @@ class dataset():
         self.sr = sr
         self.sec = sec
         self.size_of_signals = sec * sr  # fixed len of the signal 4secXfs
-        # names of all the speakers
-        self.speakers = glob.glob(os.path.join(self.path, "*"))
-        self.len = len(self.speakers)  # num of the all speakers
+        # names of all the signals fiels
+        self.names = glob.glob(os.path.join(self.path, "*.wav"))
+        self.len = len(self.names)  # len of the entire dataset
         self.noise_names = glob.glob(os.path.join(self.noise_path, "*.wav"))
         self.noise_len = len(self.noise_names)
 
@@ -53,12 +53,8 @@ class dataset():
             low=0, high=self.len, size=self.num_of_speakers)
         names = list()
         for i in range(self.num_of_speakers):
-            speaker = self.speakers[sig_indx[i]]
-            cand_names = glob.glob(os.path.join(speaker + "/**","*.wav"))
-            select_name_indx = np.random.randint(
-            low=0, high=len(cand_names), size=1)
-            name = cand_names[select_name_indx[0]]
-            names.append(os.path.basename(name)[:-14])
+            name = self.names[sig_indx[i]]
+            names.append(os.path.basename(name)[:-4])
             s, fs = sf.read(name)
             if len(s.shape) > 1:
                 s = s[:, 0]
@@ -160,7 +156,6 @@ class dataset():
 
     def gen_scene(self, scenario_num_of_speakers, scene_i, current_write_path):
         S, sig_idx = self.fetch_signals(scenario_num_of_speakers)
-        print(sig_idx)
         scenario_RT60 = round(np.random.uniform(low=0.1, high=1.0), 2)
         x = round(np.random.uniform(low=4, high=7), 2)
         y = round(np.random.uniform(low=4, high=7), 2)
@@ -188,13 +183,8 @@ class dataset():
             os.mkdir(mix_file_name)
         filename = '_'.join(map(str, sig_idx))
         name = os.path.join(mix_file_name, str(scene_i) + angles_name + '_RT60_' + str(
-            round(scenario_RT60, 2)) +
-            '_snr_' + str(snr) + 
-            '_fileidx_' + filename + '.wav')
-        name = os.path.join(mix_file_name, str(scene_i) + angles_name + '_RT60_' + str(
-            round(scenario_RT60, 2)) + '_fileidx_' + filename + '.wav')
+            round(scenario_RT60, 2)) + '_snr_' + str(snr) + '_fileidx_' + filename + '.wav')
         Mixed = Mixed / 1.2 / np.max(np.abs(Mixed))
-        print(name)
         sf.write(name, Mixed, self.sr)
 
         for spk in range(scenario_num_of_speakers):
@@ -203,16 +193,12 @@ class dataset():
                 os.mkdir(target_file_name)
 
             name = os.path.join(target_file_name, str(scene_i) + angles_name + '_RT60_' + str(
-                round(scenario_RT60, 2)) + 
-                '_snr_' + str(snr) + 
-                '_fileidx_' + filename + '.wav')
-            name = os.path.join(target_file_name, str(scene_i) + angles_name + '_RT60_' + str(
-                round(scenario_RT60, 2)) + '_fileidx_' + filename + '.wav')
+                round(scenario_RT60, 2)) + '_snr_' + str(snr) + '_fileidx_' + filename + '.wav')
             s = np.convolve(S[spk], H_anechoic[spk], mode='full')
             s = s[0: self.sec * self.sr]
             s = s / 1.2 / np.max(np.abs(s))
-            print(name)
             sf.write(name, s, self.sr)
+
 
 def main(args):
     Data = dataset(args.in_path, args.noise_path, args.sr, args.sec)
