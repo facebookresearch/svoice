@@ -54,7 +54,7 @@ class dataset():
         names = list()
         for i in range(self.num_of_speakers):
             speaker = self.speakers[sig_indx[i]]
-            cand_names = glob.glob(os.path.join(speaker + "/**","*.wav"))
+            cand_names = glob.glob(os.path.join(speaker + "/**","*.wav"), recursive=True)
             select_name_indx = np.random.randint(
             low=0, high=len(cand_names), size=1)
             name = cand_names[select_name_indx[0]]
