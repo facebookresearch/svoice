@@ -32,7 +32,7 @@ class Trainset:
         mix_json = os.path.join(json_dir, 'mix.json')
         s_jsons = list()
         s_infos = list()
-        sets_re = re.compile(r's[0-9].json')
+        sets_re = re.compile(r's[0-9]+.json')
         for s in os.listdir(json_dir):
             if sets_re.search(s):
                 s_jsons.append(os.path.join(json_dir, s))
