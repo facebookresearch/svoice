@@ -40,15 +40,15 @@ def cal_si_snr_with_pit(source, estimate_source, source_lengths):
     B, C, T = source.size()
     # mask padding position along T
     mask = get_mask(source, source_lengths)
-    estimate_source *= mask
+    estimate_source2 = estimate_source*mask
 
     # Step 1. Zero-mean norm
     num_samples = source_lengths.view(-1, 1, 1).float()  # [B, 1, 1]
     mean_target = torch.sum(source, dim=2, keepdim=True) / num_samples
-    mean_estimate = torch.sum(estimate_source, dim=2,
+    mean_estimate = torch.sum(estimate_source2, dim=2,
                               keepdim=True) / num_samples
     zero_mean_target = source - mean_target
-    zero_mean_estimate = estimate_source - mean_estimate
+    zero_mean_estimate = estimate_source2 - mean_estimate
     # mask padding position along T
     zero_mean_target *= mask
     zero_mean_estimate *= mask

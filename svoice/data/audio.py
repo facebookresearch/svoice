@@ -31,8 +31,8 @@ def find_audio_files(path, exts=[".wav"], progress=True):
     if progress:
         audio_files = tqdm.tqdm(audio_files,  ncols=80)
     for file in audio_files:
-        siginfo, _ = torchaudio.info(file)
-        length = siginfo.length // siginfo.channels
+        siginfo = torchaudio.info(file)
+        length = siginfo.num_frames // siginfo.num_channels
         meta.append((file, length))
     meta.sort()
     return meta
@@ -74,7 +74,7 @@ class Audioset:
                 offset = self.stride * index
                 num_frames = self.length
             #  out = th.Tensor(sf.read(str(file), start=offset, frames=num_frames)[0]).unsqueeze(0)
-            out = torchaudio.load(str(file), offset=offset,
+            out = torchaudio.load(str(file), frame_offset=offset,
                                   num_frames=num_frames)[0]
             if self.augment:
                 out = self.augment(out.squeeze(0).numpy()).unsqueeze(0)
