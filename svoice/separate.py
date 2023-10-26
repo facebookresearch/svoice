@@ -11,7 +11,7 @@ import logging
 import os
 import sys
 
-import librosa
+import soundfile
 import torch
 import tqdm
 
@@ -55,7 +55,7 @@ def save_wavs(estimate_source, mix_sig, lengths, filenames, out_dir, sr=16000):
 
 
 def write(inputs, filename, sr=8000):
-    librosa.output.write_wav(filename, inputs, sr, norm=True)
+    soundfile.write(filename, inputs, sr)
 
 
 def get_mix_paths(args):
