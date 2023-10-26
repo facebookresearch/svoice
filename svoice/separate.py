@@ -35,6 +35,7 @@ parser.add_argument('--device', default="cuda")
 parser.add_argument("--sample_rate", default=8000,
                     type=int, help="Sample rate")
 parser.add_argument("--batch_size", default=1, type=int, help="Batch size")
+parser.add_argument("--chunk_size", default=100000, type=int, help="Chunk to separate audio file")
 parser.add_argument('-v', '--verbose', action='store_const', const=logging.DEBUG,
                     default=logging.INFO, help="More loggging")
 
@@ -117,10 +118,19 @@ def separate(args, model=None, local_out_dir=None):
         for i, data in enumerate(tqdm.tqdm(eval_loader, ncols=120)):
             # Get batch data
             mixture, lengths, filenames = data
-            mixture = mixture.to(args.device)
+            # === Seperate input audio to chunks ===
+            estimate_sources = []
+            for mix_chunks in torch.split(mixture, 50000, dim=1):
+                mix_chunks = mix_chunks.to(args.device)
+                # Forward
+                #print('\n', mix_chunks.shape)
+                estimate_sources.append(model(mix_chunks)[-1].cpu())
+
+            # === Concatenate chunks ===
+            estimate_sources = torch.cat(estimate_sources, dim=2)
+            #print(estimate_sources.shape, "\n", lengths, mixture.shape)
+
             lengths = lengths.to(args.device)
-            # Forward
-            estimate_sources = model(mixture)[-1]
             # save wav files
             save_wavs(estimate_sources, mixture, lengths,
                       filenames, out_dir, sr=args.sample_rate)
