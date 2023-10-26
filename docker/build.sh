@@ -1,0 +1,1 @@
+docker build -t doma945/temp . -f docker/Dockerfile
