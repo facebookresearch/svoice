@@ -1,6 +1,6 @@
 from pytorch/pytorch
 
-COPY svoice/requirements.txt .
+COPY requirements.txt .
 
 RUN apt-get update -y
 RUN pip install numpy tqdm hydra_core hydra_colorlog pystoi torchaudio librosa
