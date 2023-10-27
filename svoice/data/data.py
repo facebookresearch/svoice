@@ -71,7 +71,7 @@ class Validset:
     load entire wav.
     """
 
-    def __init__(self, json_dir):
+    def __init__(self, json_dir, sample_rate=16000, segment=4.0, stride=1.0, pad=True):
         mix_json = os.path.join(json_dir, 'mix.json')
         s_jsons = list()
         s_infos = list()
@@ -84,10 +84,16 @@ class Validset:
         for s_json in s_jsons:
             with open(s_json, 'r') as f:
                 s_infos.append(json.load(f))
-        self.mix_set = Audioset(sort(mix_infos))
+
+        kw = {
+            'length': int(sample_rate * segment),
+            'stride': int(sample_rate * stride),
+            'pad': True
+        }
+        self.mix_set = Audioset(sort(mix_infos), **kw)
         self.sets = list()
         for s_info in s_infos:
-            self.sets.append(Audioset(sort(s_info)))
+            self.sets.append(Audioset(sort(s_info), **kw))
         for s in self.sets:
             assert len(s) == len(self.mix_set)
 
