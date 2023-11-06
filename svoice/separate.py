@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 parser = argparse.ArgumentParser("Speech separation using MulCat blocks")
 parser.add_argument("model_path", type=str, help="Model name")
+parser.add_argument("--cut_length", default=50000, type=int, help="Spit size for inference file [Adapt to your GPU memory]")
 parser.add_argument("out_dir", type=str, default="exp/result",
                     help="Directory putting enhanced wav files")
 parser.add_argument("--mix_dir", type=str, default=None,
@@ -120,7 +121,7 @@ def separate(args, model=None, local_out_dir=None):
             mixture, lengths, filenames = data
             # === Seperate input audio to chunks ===
             estimate_sources = []
-            for mix_chunks in torch.split(mixture, 50000, dim=1):
+            for mix_chunks in torch.split(mixture, args.cut_length, dim=1):
                 mix_chunks = mix_chunks.to(args.device)
                 # Forward
                 #print('\n', mix_chunks.shape)
