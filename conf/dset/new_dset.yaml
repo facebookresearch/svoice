@@ -1,6 +1,6 @@
 # @package dset
-train: egs/new_out/tr
-valid: egs/new_out/tr
-test: egs/new_out/tr
-mix_json: egs/new_out/tr/mix.json
+train: egs/train/tr
+valid: egs/valid/tr
+test: egs/test/tr
+mix_json: egs/train/tr/mix.json
 mix_dir:
