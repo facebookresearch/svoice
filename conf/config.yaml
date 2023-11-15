@@ -1,7 +1,9 @@
 defaults:
-  - dset: debug
+  - dset: new_dset
   - hydra/job_logging: colorlog
   - hydra/hydra_logging: colorlog
+
+cut_length: 50000 # Split size for inference file [Adapt to your GPU memory
 
 # Dataset related
 sample_rate: 8000
