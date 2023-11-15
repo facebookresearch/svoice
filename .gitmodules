@@ -1,0 +1,6 @@
+[submodule "sms_wsj"]
+	path = sms_wsj
+	url = https://github.com/fgnt/sms_wsj.git
+[submodule "kaldi"]
+	path = kaldi
+	url = https://github.com/kaldi-asr/kaldi.git
